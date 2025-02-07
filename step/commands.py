@@ -1,5 +1,5 @@
 import logging
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update
 from telegram.ext import CallbackContext
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
@@ -7,11 +7,8 @@ from config import BINANCE_API_KEY, BINANCE_API_SECRET
 import db
 
 logger = logging.getLogger(__name__)
-# Инициализируем Binance в тестовом режиме
-binance_client = Client(BINANCE_API_KEY, BINANCE_API_SECRET, testnet=True)
 
-# Пример единообразного стиля сообщений:
-# Для успеха – "✅", для ошибок – "❌", для информации – "ℹ️", для команд – "🚀", для трендов – "📈/📉" и т.д.
+binance_client = Client(BINANCE_API_KEY, BINANCE_API_SECRET, testnet=True)
 
 async def start(update: Update, context: CallbackContext):
     """Команда /start – приветствие и краткая инструкция."""

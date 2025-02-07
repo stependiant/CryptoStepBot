@@ -8,7 +8,6 @@ import commands
 import scheduler
 import db
 
-# Применяем nest_asyncio, чтобы разрешить повторный запуск цикла событий
 nest_asyncio.apply()
 
 logging.basicConfig(
@@ -18,17 +17,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 async def main():
-    # Инициализируем базу данных (создаем таблицы, если их нет)
     db.init_db()
 
-    # Создаем приложение через ApplicationBuilder
     app = ApplicationBuilder().token(config.TELEGRAM_TOKEN).build()
 
-    # Если JobQueue недоступна, значит extras не установлены
     if app.job_queue is None:
         raise RuntimeError("JobQueue не настроена. Установите python-telegram-bot с поддержкой job-queue, выполнив: pip install \"python-telegram-bot[job-queue]\"")
 
-    # Задаем список команд бота
     command_list = [
         BotCommand("start", "Инициализация и приветствие"),
         BotCommand("help", "Справка по командам"),
@@ -49,7 +44,6 @@ async def main():
     ]
     await app.bot.set_my_commands(command_list)
 
-    # Регистрируем обработчики команд
     app.add_handler(CommandHandler("start", commands.start))
     app.add_handler(CommandHandler("help", commands.help_command))
     app.add_handler(CommandHandler("all", commands.all_coins))
@@ -67,11 +61,9 @@ async def main():
     app.add_handler(CommandHandler("news_on", commands.news_on))
     app.add_handler(CommandHandler("news_off", commands.news_off))
 
-    # Планирование фоновых задач через job_queue, полученную из app.job_queue
     app.job_queue.run_repeating(scheduler.news_job, interval=5)
     scheduler.schedule_subscriptions(app.job_queue)
 
-    # Запуск бота (polling)
     await app.run_polling()
 
 if __name__ == '__main__':
