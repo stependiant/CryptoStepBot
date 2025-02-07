@@ -2,6 +2,8 @@
 
 A Telegram bot that provides comprehensive cryptocurrency market data, deep analysis, and interactive features by integrating with the Binance API and using PostgreSQL for data storage. The bot offers a rich set of commands to retrieve real-time data, perform currency conversions, subscribe to periodic updates, and receive market news alerts.
 
+Bot in telegram - @cryptoanalyzerstepbot
+
 ## Features
 
 ### 1. General Menu and Help 🤖
